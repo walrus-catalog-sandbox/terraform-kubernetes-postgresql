@@ -34,6 +34,9 @@ function generate() {
   for example in "${examples[@]}"; do
     seal::terraform::docs "${target}/examples/${example}" --config="${target}/.terraform-docs.yml"
   done
+
+  # fetch chart from https://hub.docker.com/r/bitnamicharts/postgresql/tags.
+  seal::helm::pull oci://registry-1.docker.io/bitnamicharts/postgresql:13.2.5 "${ROOT_DIR}/charts"
 }
 
 #
