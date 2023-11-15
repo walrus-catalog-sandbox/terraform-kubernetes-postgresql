@@ -171,9 +171,10 @@ locals {
       }
       # postgresql readReplicas parameters: https://github.com/bitnami/charts/blob/main/bitnami/postgresql/README.md#postgresql-read-only-replica-parameters-only-used-when-architecture-is-set-to-replication
       readReplicas = {
-        name        = "secondary"
-        resources   = local.resources
-        persistence = local.persistence
+        name         = "secondary"
+        replicaCount = coalesce(var.replication_readonly_replicas, 1)
+        resources    = local.resources
+        persistence  = local.persistence
       }
     } : null,
 
