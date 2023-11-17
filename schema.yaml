@@ -29,9 +29,13 @@ components:
           default: {}
           additionalProperties:
             type: object
+            x-walrus-ui:
+              colSpan: 12
           x-walrus-ui:
+            colSpan: 12
             group: Basic
             hidden: true
+            order: 1
         infrastructure:
           title: Infrastructure
           type: object
@@ -45,31 +49,30 @@ components:
               image_registry: string, optional
               domain_suffix: string, optional
             ```
+          default: {}
           properties:
             domain_suffix:
               default: cluster.local
               title: Domain Suffix
               type: string
+              x-walrus-ui:
+                order: 3
             image_registry:
               default: registry-1.docker.io
               title: Image Registry
               type: string
+              x-walrus-ui:
+                order: 2
             namespace:
               title: Namespace
               type: string
+              x-walrus-ui:
+                hidden: true
+                order: 1
           x-walrus-ui:
+            colSpan: 12
             group: Basic
-        architecture:
-          title: Architecture
-          type: string
-          description: |
-            Specify the deployment architecture, select from standalone or replication.
-          default: standalone
-          enum:
-          - standalone
-          - replication
-          x-walrus-ui:
-            group: Basic
+            order: 2
         replication_readonly_replicas:
           title: Replication Readonly Replicas
           type: number
@@ -82,7 +85,20 @@ components:
           - 3
           x-walrus-ui:
             group: Basic
+            order: 3
             showIf: architecture=replication
+        architecture:
+          title: Architecture
+          type: string
+          description: |
+            Specify the deployment architecture, select from standalone or replication.
+          default: standalone
+          enum:
+          - standalone
+          - replication
+          x-walrus-ui:
+            group: Basic
+            order: 4
         engine_version:
           title: Engine Version
           type: string
@@ -91,6 +107,7 @@ components:
           default: "13"
           x-walrus-ui:
             group: Basic
+            order: 5
         database:
           title: Database
           type: string
@@ -99,6 +116,7 @@ components:
           default: mydb
           x-walrus-ui:
             group: Basic
+            order: 6
         username:
           title: Username
           type: string
@@ -107,6 +125,7 @@ components:
           default: rdsuser
           x-walrus-ui:
             group: Basic
+            order: 7
         password:
           title: Password
           type: string
@@ -114,6 +133,7 @@ components:
             Specify the account password.
           x-walrus-ui:
             group: Basic
+            order: 8
         resources:
           title: Resources
           type: object
@@ -136,11 +156,17 @@ components:
             cpu:
               title: Cpu
               type: number
+              x-walrus-ui:
+                order: 1
             memory:
               title: Memory
               type: number
+              x-walrus-ui:
+                order: 2
           x-walrus-ui:
+            colSpan: 12
             group: Basic
+            order: 9
         storage:
           title: Storage
           type: object
@@ -157,12 +183,18 @@ components:
             class:
               title: Class
               type: string
+              x-walrus-ui:
+                order: 1
             size:
               default: 20480
               title: Size
               type: number
+              x-walrus-ui:
+                order: 2
           x-walrus-ui:
+            colSpan: 12
             group: Basic
+            order: 10
         seeding:
           title: Seeding
           type: object
@@ -185,34 +217,51 @@ components:
               title: Text
               type: object
               x-walrus-ui:
+                colSpan: 12
                 group: Basic
-                showIf: type=text
+                showIf: type=tex
+                order: 2
             type:
               default: url
               title: Type
               type: string
+              x-walrus-ui:
+                order: 1
             url:
               properties:
                 location:
                   title: Location
                   type: string
+                  x-walrus-ui:
+                    order: 1
                 storage:
                   properties:
                     class:
                       title: Class
                       type: string
+                      x-walrus-ui:
+                        order: 1
                     size:
                       default: 10240
                       title: Size
                       type: number
+                      x-walrus-ui:
+                        order: 2
                   title: Storage
                   type: object
+                  x-walrus-ui:
+                    colSpan: 12
+                    order: 2
               required:
               - location
               title: Url
               type: object
               x-walrus-ui:
+                colSpan: 12
                 group: Basic
                 showIf: type=url
+                order: 3
           x-walrus-ui:
+            colSpan: 12
             group: Basic
+            order: 11
