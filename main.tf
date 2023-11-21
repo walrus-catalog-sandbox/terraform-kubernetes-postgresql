@@ -140,7 +140,7 @@ locals {
       architecture = local.architecture
       image = {
         repository = "bitnami/postgresql"
-        tag        = coalesce(var.engine_version, "13")
+        tag        = coalesce(try(length(split(".", var.engine_version)) != 2 ? var.engine_version : format("%s.0", var.engine_version), null), "15")
       }
       auth = {
         database            = coalesce(var.database, "mydb")
