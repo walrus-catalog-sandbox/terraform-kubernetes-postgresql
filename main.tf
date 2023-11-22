@@ -51,6 +51,8 @@ resource "random_string" "name_suffix" {
 
 locals {
   name     = join("-", [local.resource_name, random_string.name_suffix.result])
+  database = coalesce(var.database, "mydb")
+  username = coalesce(var.username, "rdsuser")
   password = coalesce(var.password, random_password.password.result)
 }
 
@@ -143,8 +145,8 @@ locals {
         tag        = coalesce(try(length(split(".", var.engine_version)) != 2 ? var.engine_version : format("%s.0", var.engine_version), null), "15")
       }
       auth = {
-        database            = coalesce(var.database, "mydb")
-        username            = coalesce(var.username, "postgres") == "postgres" ? "" : var.username
+        database            = local.database
+        username            = local.username == "postgres" ? "" : local.username
         replicationUsername = "replicator"
       }
     },
@@ -172,7 +174,7 @@ locals {
       # postgresql readReplicas parameters: https://github.com/bitnami/charts/blob/main/bitnami/postgresql/README.md#postgresql-read-only-replica-parameters-only-used-when-architecture-is-set-to-replication
       readReplicas = {
         name         = "secondary"
-        replicaCount = coalesce(var.replication_readonly_replicas, 1)
+        replicaCount = var.replication_readonly_replicas == 0 ? 1 : var.replication_readonly_replicas
         resources    = local.resources
         persistence  = local.persistence
       }
