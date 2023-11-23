@@ -4,7 +4,9 @@ info:
 components:
   schemas:
     variables:
-      required: []
+      required: 
+      - architecture
+      - engine_version
       type: object
       properties:
         context:
@@ -13,6 +15,7 @@ components:
           description: |
             Receive contextual information. When Walrus deploys, Walrus will inject specific contextual information into this field.
           default: {}
+          nullable: true
           additionalProperties:
             type: object
             x-walrus-ui:
@@ -28,11 +31,13 @@ components:
           description: |
             Specify the infrastructure information for deploying.
           default: {}
+          nullable: true
           properties:
             domain_suffix:
               description: |
                 Specify the domain name of the Kubernetes cluster.
               default: cluster.local
+              nullable: true
               title: Domain Suffix
               type: string
               x-walrus-ui:
@@ -41,6 +46,7 @@ components:
               description: |
                 Specify the image registry to pull the bitnami/postgresql image, default is `registry-1.docker.io`.
               default: registry-1.docker.io
+              nullable: true
               title: Image Registry
               type: string
               x-walrus-ui:
@@ -48,6 +54,7 @@ components:
             namespace:
               title: Namespace
               type: string
+              nullable: true
               x-walrus-ui:
                 hidden: true
                 order: 1
@@ -73,6 +80,7 @@ components:
           description: |
             Specify the number of read-only replicas under the replication deployment.
           default: 1
+          nullable: true
           enum:
           - 1
           - 2
@@ -97,8 +105,9 @@ components:
             Specify the database name. The database name must be 2-64 characters long and start with any lower letter, combined with number, or symbols: - _. 
             The database name cannot be PostgreSQL forbidden keyword.
           default: mydb
-          minLength: 2
+          nullable: true
           maxLength: 64
+          minLength: 2
           x-walrus-ui:
             group: Basic
             order: 6
@@ -109,8 +118,9 @@ components:
             Specify the account username. The username must be 2-16 characters long and start with lower letter(expect `pg` prefix), combined with number, or symbol: _.
             The username cannot be PostgreSQL forbidden keyword and postgres.
           default: rdsuser
-          minLength: 2
+          nullable: true
           maxLength: 16
+          minLength: 2
           x-walrus-ui:
             group: Basic
             order: 7
@@ -120,8 +130,9 @@ components:
           description: |
             Specify the account password. The password must be 8-32 characters long and start with any letter, number, or symbols: ! # $ % ^ & * ( ) _ + - =.
             If not specified, it will generate a random password.
-          minLength: 8
+          nullable: true
           maxLength: 32
+          minLength: 8
           format: password
           writeOnly: true
           x-walrus-ui:
@@ -135,11 +146,14 @@ components:
           default:
             cpu: 0.25
             memory: 256
+          nullable: true
           properties:
             cpu:
               description: |
                 Specify the cpu resources. Unit is core.
               default: 0.25
+              minimum: 0.1
+              nullable: true
               title: Cpu(Core)
               type: number
               x-walrus-ui:
@@ -148,6 +162,8 @@ components:
               description: |
                 Specify the memory resources. Unit is megabyte.
               default: 256
+              minimum: 128
+              nullable: true
               title: Memory(MiB)
               type: number
               x-walrus-ui:
@@ -161,10 +177,12 @@ components:
           type: object
           description: |
             Specify the storage resources.
+          nullable: true
           properties:
             class:
               description: |
                 Specify the storage class. If not specified, it will use the default provisioner.
+              nullable: true
               title: Class
               type: string
               x-walrus-ui:
@@ -173,6 +191,8 @@ components:
               description: |
                 Specify the storage size. Unit is megabyte.
               default: 20480
+              minimum: 1024
+              nullable: true
               title: Size(MiB)
               type: number
               x-walrus-ui:
@@ -188,10 +208,14 @@ components:
             Specify the configuration to seed the database at first-time creating.
             Seeding increases the startup time waiting and also needs
             proper permission, like root account.
+          nullable: true
+          required:
+          - type
           properties:
             text:
               description: |
                 Configure database seeding from text.
+              nullable: true
               properties:
                 content:
                   description: |
@@ -221,6 +245,7 @@ components:
             url:
               description: |
                 Configure database seeding from URL.
+              nullable: true
               properties:
                 location:
                   description: |
@@ -232,10 +257,12 @@ components:
                 storage:
                   description: |
                     Specify a storage to store the downloaded SQL statements.
+                  nullable: true
                   properties:
                     class:
                       description: |
                         Specify the storage class. If not specified, it will use the default provisioner.
+                      nullable: true
                       title: Class
                       type: string
                       x-walrus-ui:
@@ -244,6 +271,8 @@ components:
                       description: |
                         Specify the storage size. Unit is megabyte.
                       default: 10240
+                      minimum: 1024
+                      nullable: true
                       title: Size(MiB)
                       type: number
                       x-walrus-ui:
