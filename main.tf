@@ -123,6 +123,9 @@ locals {
     accessModes  = ["ReadWriteOnce"]
     size         = try(format("%dMi", var.storage.size), "20480Mi")
   }
+  service = {
+    type = try(coalesce(var.infrastructure.service_type, "NodePort"), "NodePort")
+  }
 
   values = [
     # basic configuration.
@@ -160,6 +163,7 @@ locals {
         name        = "primary"
         resources   = local.resources
         persistence = local.persistence
+        service     = local.service
       }
     } : null,
 
@@ -171,6 +175,7 @@ locals {
         name        = "primary"
         resources   = local.resources
         persistence = local.persistence
+        service     = local.service
       }
       # postgresql readReplicas parameters: https://github.com/bitnami/charts/blob/main/bitnami/postgresql/README.md#postgresql-read-only-replica-parameters-only-used-when-architecture-is-set-to-replication
       readReplicas = {
@@ -178,6 +183,7 @@ locals {
         replicaCount = var.replication_readonly_replicas == 0 ? 1 : var.replication_readonly_replicas
         resources    = local.resources
         persistence  = local.persistence
+        service      = local.service
       }
     } : null,
 
