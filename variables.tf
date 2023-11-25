@@ -177,7 +177,7 @@ like root account.
 Examples:
 ```
 seeding:
-  type: url/text
+  type: none/url/text
   url:                           # store the content to a volume
     location: string
     storage:                     # convert to dynamic volume claim template
@@ -188,7 +188,7 @@ seeding:
 ```
 EOF
   type = object({
-    type = optional(string, "url")
+    type = optional(string, "none")
     url = optional(object({
       location = string
       storage = optional(object({
@@ -202,7 +202,7 @@ EOF
   })
   default = {}
   validation {
-    condition     = var.seeding.type == null || contains(["url", "text"], var.seeding.type)
+    condition     = var.seeding.type == null || contains(["none", "url", "text"], var.seeding.type)
     error_message = "Invalid type"
   }
 }
