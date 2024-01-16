@@ -220,6 +220,7 @@ components:
                   type: string
                   x-walrus-ui:
                     order: 1
+                    widget: TextArea
               required:
               - content
               title: Text
@@ -297,4 +298,3 @@ components:
       x-walrus-ui:
         groupOrder:
         - Basic
-        - Advanced
