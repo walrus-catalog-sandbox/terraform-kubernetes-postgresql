@@ -298,3 +298,4 @@ components:
       x-walrus-ui:
         groupOrder:
         - Basic
+        - Advanced
